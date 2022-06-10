@@ -1,20 +1,23 @@
-package com.example.chatapp;
+package com.example.chatapp.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.example.chatapp.service.Constant;
+import com.example.chatapp.R;
+import com.example.chatapp.databinding.ActivityLoginBinding;
+import com.example.chatapp.service.FireBaseHelper;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.chatapp.databinding.ActivityLoginBinding;
+
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -22,8 +25,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding binding;
-    private GoogleSignInOptions gso ;
-    private GoogleSignInClient  gsc;
+    private GoogleSignInOptions gso;
+    private GoogleSignInClient gsc;
     private FirebaseAuth fba;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +46,11 @@ public class LoginActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
         gsc = GoogleSignIn.getClient(this,gso );
-
     }
 
     private void signIn(){
         Intent signInIntent = gsc.getSignInIntent();
-        startActivityForResult(signInIntent,Constant.RQ_CODE);
+        startActivityForResult(signInIntent, Constant.RQ_CODE);
     }
 
     @Override
@@ -73,13 +75,11 @@ public class LoginActivity extends AppCompatActivity {
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         fba.signInWithCredential(firebaseCredential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = fba.getCurrentUser();
-                            mainActivity();
-                        }
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = fba.getCurrentUser();
+                        FireBaseHelper.sendDataUser(user.getUid(),user.getDisplayName(),user.getEmail(),user.getPhotoUrl().toString());
+                        mainActivity();
                     }
                 });
 
@@ -88,15 +88,15 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser user = fba.getCurrentUser();
-        if(user!=null){
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if(account!=null){
             mainActivity();
         }
-
     }
 
     private void mainActivity(){
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
+
 }

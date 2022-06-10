@@ -13,5 +13,12 @@
     <string name="login_str">Please to login to keep your data safe and synced across devices</string>
     <string name="continue_with_google">Continue with Google</string>
     <string name="chat_app">Chat App</string>
-    <string name="server_client_id">724960171911-im59ct0gt4p20egeikj9sh8d2kbkk139.apps.googleusercontent.com</string>
+    <string name="server_client_id">724960171911-uqd9fd107th45d22vvi9vpvcs2bkhtgk.apps.googleusercontent.com</string>
+    <string name="textview">TextView</string>
+    <string name="say">Welcome</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_friends">Add friends</string>
+    <string name="tadd_friends">\tAdd Friends</string>
+    <string name="enter_name_to_find_friends">Enter name to find friends</string>
 </resources>

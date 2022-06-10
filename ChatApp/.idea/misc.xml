@@ -3,6 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/ChatApp/ChatApp/app/src/main/res/drawable/custom_card.xml" value="0.1545" />
+        <entry key="..\:/ChatApp/ChatApp/app/src/main/res/drawable/custom_edit.xml" value="0.1545" />
+        <entry key="..\:/ChatApp/ChatApp/app/src/main/res/drawable/custom_layout1.xml" value="0.1545" />
+        <entry key="..\:/ChatApp/ChatApp/app/src/main/res/layout/activity_login.xml" value="0.22826086956521738" />
+        <entry key="..\:/ChatApp/ChatApp/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/ChatApp/ChatApp/app/src/main/res/layout/fragment_chat.xml" value="0.10989583333333333" />
+        <entry key="..\:/ChatApp/ChatApp/app/src/main/res/layout/fragment_friends.xml" value="0.16799999999999998" />
+        <entry key="..\:/ChatApp/ChatApp/app/src/main/res/layout/item_cardview.xml" value="0.22826086956521738" />
         <entry key="..\:/ChatApp/app/src/main/res/drawable/custom_button.xml" value="0.1545" />
         <entry key="..\:/ChatApp/app/src/main/res/drawable/custom_layout1.xml" value="0.1545" />
         <entry key="..\:/ChatApp/app/src/main/res/layout/activity_login.xml" value="0.24374420759962928" />
