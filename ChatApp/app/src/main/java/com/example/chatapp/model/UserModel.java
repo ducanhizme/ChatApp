@@ -1,13 +1,14 @@
 package com.example.chatapp.model;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class UserModel {
     private String id;
     private String name;
     private String email;
     private String image;
-    private ArrayList<UserModel> listFriends;
+    private List<UserModel> listFriends = new ArrayList<>();
 
     public UserModel() {}
 
@@ -57,6 +58,14 @@ public class UserModel {
         hm.put("email",email);
         hm.put("image",image);
         return hm;
+    }
+
+    public List<UserModel> getListFriends() {
+        return listFriends;
+    }
+
+    public void setListFriends(List<UserModel> listFriends) {
+        this.listFriends = listFriends;
     }
 
     @Override

@@ -6,10 +6,9 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.chatapp.fragment.ChatFragment;
-import com.example.chatapp.fragment.FriendsFragment;
-import com.example.chatapp.model.UserModel;
-
-import java.util.ArrayList;
+import com.example.chatapp.fragment.FriendFragment;
+import com.example.chatapp.fragment.RequestFragment;
+import com.example.chatapp.fragment.UserFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
     public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
@@ -21,16 +20,20 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new FriendsFragment();
+                return new UserFragment();
             case 1:
                 return new ChatFragment();
+            case 2:
+                return new FriendFragment();
+            case 3:
+                return new RequestFragment();
         }
-        return new FriendsFragment();
+        return new UserFragment();
     }
 
     @Override
     public int getItemCount() {
-        return 2;
+        return 4;
     }
 
 

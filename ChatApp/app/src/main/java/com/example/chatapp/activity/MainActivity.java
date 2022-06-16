@@ -10,16 +10,12 @@ import android.os.Bundle;
 import com.example.chatapp.R;
 import com.example.chatapp.adapter.ViewPagerAdapter;
 import com.example.chatapp.databinding.ActivityMainBinding;
-import com.example.chatapp.fragment.FriendsFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
@@ -31,16 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private String userName;
     private Uri userImage;
     private ViewPagerAdapter vpa;
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if(account!= null)
-            updateUI(account);
-    }
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,10 +46,16 @@ public class MainActivity extends AppCompatActivity {
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 switch (position){
                     case 0:
-                        tab.setText("Friends");
+                        tab.setText("Users");
                         break;
                     case 1:
                         tab.setText("Chat");
+                        break;
+                    case 2:
+                        tab.setText("Friends");
+                        break;
+                    case 3:
+                        tab.setText("Request");
                         break;
                 }
             }
@@ -107,6 +100,14 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,LoginActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if(account!= null)
+            updateUI(account);
     }
 
 }
