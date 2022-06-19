@@ -20,17 +20,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestViewHolder>{
-    public List<RequestFriend> listRequest = new ArrayList<>();
+    public ArrayList<RequestFriend> listRequest = new ArrayList<>();
     public Context mContext;
 
-    public RequestAdapter(Context mContext){
+    public RequestAdapter(Context mContext/*, List<RequestFriend> mListRequest*/){
         this.mContext = mContext;
+      //  this.listRequest = (ArrayList<RequestFriend>) mListRequest;
     }
 
+
     @SuppressLint("NotifyDataSetChanged")
-    public void updateRequestList(List<RequestFriend> listRequest){
-        this.listRequest = listRequest;
+    public void updateRequestList(List<RequestFriend> mListRequest){
+        listRequest.clear();
         notifyDataSetChanged();
+        this.listRequest.addAll(mListRequest);
     }
 
     @NonNull
@@ -48,10 +51,10 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
 
     @Override
     public int getItemCount() {
-        return 0;
+        return listRequest.size() ;
     }
 
-    public  class RequestViewHolder extends RecyclerView.ViewHolder{
+    public static class RequestViewHolder extends RecyclerView.ViewHolder{
         ItemRequestBinding binding_;
         public RequestViewHolder(@NonNull ItemRequestBinding binding_) {
             super(binding_.getRoot());
@@ -68,8 +71,5 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
             }
 
         }
-
-
-
     }
 }

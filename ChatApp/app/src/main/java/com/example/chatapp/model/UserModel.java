@@ -8,7 +8,6 @@ public class UserModel {
     private String name;
     private String email;
     private String image;
-    private List<UserModel> listFriends = new ArrayList<>();
 
     public UserModel() {}
 
@@ -60,15 +59,15 @@ public class UserModel {
         return hm;
     }
 
-    public List<UserModel> getListFriends() {
+  /*  public List<UserModel> getListFriends() {
         return listFriends;
     }
 
     public void setListFriends(List<UserModel> listFriends) {
         this.listFriends = listFriends;
-    }
+    }*/
 
-    @Override
+   /* @Override
     public String toString() {
         return "UserModel{" +
                 "id='" + id + '\'' +
@@ -77,5 +76,5 @@ public class UserModel {
                 ", image='" + image + '\'' +
                 ", listFriends=" + listFriends +
                 '}';
-    }
+    }*/
 }

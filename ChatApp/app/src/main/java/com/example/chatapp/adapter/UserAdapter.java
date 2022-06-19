@@ -1,5 +1,6 @@
 package com.example.chatapp.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -33,19 +34,22 @@ import java.util.List;
 
 public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserViewHolder>{
 
-    public List<UserModel> userList = new ArrayList<>();
+    public ArrayList<UserModel> userList = new ArrayList<UserModel>();
     public Dialog dialog;
     public Context mContext;
 
 
-    public UserAdapter(Context mContext){
+    public UserAdapter(Context mContext, ArrayList<UserModel> userList){
         this.mContext = mContext;
+        this.userList = userList;
     }
 
 
-    public void updateUserList(List<UserModel> userList){
-        this.userList = userList;
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateUserList(List<UserModel> users){
+        userList.clear();
         notifyDataSetChanged();
+        userList.addAll(users);
     }
     @NonNull
     @Override
@@ -75,9 +79,9 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserViewHolde
         return userList.size();
     }
 
-    public class UserViewHolder extends RecyclerView.ViewHolder{
+    public class UserViewHolder extends RecyclerView.ViewHolder {
         ItemCardviewBinding binding_;
-        String state ="nothing";
+        String state = "nothing";
 
 
         public UserViewHolder(@NonNull ItemCardviewBinding binding_) {
@@ -85,7 +89,7 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserViewHolde
             this.binding_ = binding_;
         }
 
-        public void bindViewHolder(String id,String name, String email, String imageUri){
+        public void bindViewHolder(String id, String name, String email, String imageUri) {
             binding_.username.setText(name);
             binding_.emailUser.setText(email);
             Picasso.get().load(Uri.parse(imageUri)).into(binding_.imageUser);
@@ -93,9 +97,9 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserViewHolde
 
         private boolean isYou(String id) {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            if(user != null){
-                Log.d("id",user.getUid());
-                if(user.getUid().equalsIgnoreCase(id)){
+            if (user != null) {
+                Log.d("id", user.getUid());
+                if (user.getUid().equalsIgnoreCase(id)) {
                     binding_.friend.setText("You");
                     return false;
                 }
@@ -104,37 +108,36 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserViewHolde
         }
 
 
-        private void addFriendDialog(List<UserModel> list,int position){
+        private void addFriendDialog(List<UserModel> list, int position) {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            UserModel userCurrentModel = new UserModel(user.getUid(),user.getDisplayName(),user.getEmail(),String.valueOf(user.getPhotoUrl()));
-            dialog = new Dialog(mContext);
-            dialog.setContentView(R.layout.popup_dialog);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            ShapeableImageView imge = dialog.findViewById(R.id.avatarDialog);
-            TextView nameDialog = dialog.findViewById(R.id.user_name_dialog);
-            AppCompatButton cancelBtn = dialog.findViewById(R.id.cancel_btn);
-            AppCompatButton addBtn = dialog.findViewById(R.id.add_btn);
-            String  uriImage = list.get(position).getImage();
-            String name = list.get(position).getName();
-            Picasso.get().load(Uri.parse(uriImage)).into(imge);
-            nameDialog.setText(name);
-            dialog.show();
-            cancelBtn.setOnClickListener(view_->{
-                dialog.dismiss();
-            });
-            addBtn.setOnClickListener(view_->{
-                addBtn.setText("Pending");
-                if(user!= null){
-                    FireBaseHelper.sendRequest(user.getUid(),list.get(position).getId(),Constant.RECEIVER,list.get(position));
-                    FireBaseHelper.sendRequest(list.get(position).getId(),user.getUid(),Constant.SENDER,userCurrentModel);
-                    state ="pending";
-                    Log.e("state",state);
+            if (user != null) {
+                UserModel userCurrentModel = new UserModel(user.getUid(), user.getDisplayName(), user.getEmail(), String.valueOf(user.getPhotoUrl()));
+                dialog = new Dialog(mContext);
+                dialog.setContentView(R.layout.popup_dialog);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                ShapeableImageView imge = dialog.findViewById(R.id.avatarDialog);
+                TextView nameDialog = dialog.findViewById(R.id.user_name_dialog);
+                AppCompatButton cancelBtn = dialog.findViewById(R.id.cancel_btn);
+                AppCompatButton addBtn = dialog.findViewById(R.id.add_btn);
+                String uriImage = list.get(position).getImage();
+                String name = list.get(position).getName();
+                Picasso.get().load(Uri.parse(uriImage)).into(imge);
+                nameDialog.setText(name);
+                dialog.show();
+                cancelBtn.setOnClickListener(view_ -> {
+                    dialog.dismiss();
+                });
+                if (state.equals("pending")) {
+                    addBtn.setText("Pending");
                 }
-                if (state.equals("pending")){
-                    state = "nothing";
-                    Log.e("state",state);
-                }
-            });
+                addBtn.setOnClickListener(view_ -> {
+                    addBtn.setText("Pending");
+                    FireBaseHelper.sendRequest(user.getUid(), list.get(position).getId(), Constant.RECEIVER, list.get(position));
+                    FireBaseHelper.sendRequest(list.get(position).getId(), user.getUid(), Constant.SENDER, userCurrentModel);
+                    state = "pending";
+                    Log.e("state", state);
+                });
+            }
         }
     }
 }

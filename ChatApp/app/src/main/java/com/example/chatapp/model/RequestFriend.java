@@ -42,11 +42,4 @@ public class RequestFriend {
         return hm;
     }
 
-    @Override
-    public String toString() {
-        return "RequestFriend{" +
-                "user=" + user.toString()+
-                ", type='" + type + '\'' +
-                '}';
-    }
 }

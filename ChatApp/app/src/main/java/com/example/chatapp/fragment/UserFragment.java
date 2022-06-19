@@ -1,5 +1,6 @@
 package com.example.chatapp.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -18,42 +19,68 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.example.chatapp.adapter.UserAdapter;
 
 import com.example.chatapp.databinding.FragmentUserBinding;
 import com.example.chatapp.model.UserModel;
+import com.example.chatapp.service.Constant;
 import com.example.chatapp.service.FireBaseHelper;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserFragment extends Fragment {
     private FragmentUserBinding binding_;
-    private UserAdapter ua;
-    private List<UserModel> mlist = new ArrayList<>();
+    private UserAdapter ua ;
+    private ArrayList<UserModel> mlist=  new ArrayList<>();
     private Dialog dialog;
 
     public UserFragment() {}
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mlist = new ArrayList<>();
-        mlist = FireBaseHelper.getListUser();
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding_ = FragmentUserBinding.inflate(inflater);
+        initViews();
+        getDataFromFb();
+        return binding_.getRoot();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    private void getDataFromFb() {
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference ref = db.getReference(Constant.USER_REFERENCE);
+        ref.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                mlist.clear();
+                for(DataSnapshot data : snapshot.getChildren()){
+                    UserModel user = data.getValue(UserModel.class);
+                    mlist.add(user);
+                    ua.notifyDataSetChanged();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(),error.getMessage(), Toast.LENGTH_SHORT).show();
 
-        binding_ = FragmentUserBinding.inflate(inflater,container,false);
-        LinearLayoutManager ln = new LinearLayoutManager(getContext());
-        binding_.recyclerview.setLayoutManager(ln);
-        binding_.recyclerview.setHasFixedSize(true);
-        ua = new UserAdapter(getContext());
-        ua.updateUserList(mlist);
-        binding_.recyclerview.setAdapter(ua);
+            }
+        });
+    }
+
+    private void initViews() {
+        setUpRcv();
+        setUpSearchView();
+    }
+
+    private void setUpSearchView() {
         binding_.sv.clearFocus();
         binding_.sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -67,13 +94,17 @@ public class UserFragment extends Fragment {
                 return true;
             }
         });
-        return binding_.getRoot();
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    private void setUpRcv() {
+        ua = new UserAdapter(getContext(), mlist);
+        binding_.recyclerview.setAdapter(ua);
+        LinearLayoutManager ln = new LinearLayoutManager(getContext());
+        binding_.recyclerview.setLayoutManager(ln);
+        binding_.recyclerview.setHasFixedSize(true);
+
     }
+
 
     private void filter(String s) {
         List<UserModel> userFilter = new ArrayList<>();

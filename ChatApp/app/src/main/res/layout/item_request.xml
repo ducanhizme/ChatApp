@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/user_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/custom_card"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginBottom="10dp"
+    android:background="@drawable/custom_card"
     android:padding="10dp">
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -14,6 +14,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_launcher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/circle" />
 
     <TextView
@@ -21,53 +23,60 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
         android:layout_toEndOf="@+id/imageUser"
         android:fontFamily="@font/roboto_bold"
         android:text="User name"
         android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/emailUser"
+        app:layout_constraintStart_toEndOf="@+id/imageUser" />
 
     <TextView
-        android:fontFamily="@font/roboto_medium"
         android:id="@+id/emailUser"
-        android:layout_marginStart="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/username"
-        android:layout_marginTop="10dp"
+        android:layout_marginEnd="32dp"
         android:layout_toEndOf="@+id/imageUser"
+        android:fontFamily="@font/roboto_medium"
         android:text="Emailuser"
         android:textColor="@color/black"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageUser"
+        app:layout_constraintEnd_toEndOf="@+id/username" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:id="@+id/linearLayout3"
+        android:layout_width="176dp"
+        android:layout_height="36dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/accept"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/custom_button_cancel"
             android:fontFamily="@font/roboto_bold"
             android:text="accept"
-            android:textColor="@color/white"
-            android:background="@drawable/custom_button_cancel"/>
+            android:textColor="@color/white" />
+
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="10dp"
             android:layout_height="10dp"
-            app:dividerColor="@color/white"/>
+            app:dividerColor="@color/white" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/custom_button_add"
             android:fontFamily="@font/roboto_bold"
-            android:text="cancel"
-            android:background="@drawable/custom_button_add"/>
+            android:text="cancel" />
     </LinearLayout>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

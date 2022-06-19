@@ -34,9 +34,9 @@ public class FireBaseHelper {
 
     public static ArrayList<UserModel> getListUser(){
         ArrayList<UserModel> userList = new ArrayList<>();
-        FirebaseDatabase fbdb = FirebaseDatabase.getInstance();
-        DatabaseReference dbr = fbdb.getReference(Constant.USER_REFERENCE);
-        dbr.addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference ref = db.getReference(Constant.USER_REFERENCE);
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot data : snapshot.getChildren()){
@@ -73,7 +73,6 @@ public class FireBaseHelper {
                 for(DataSnapshot e : snapshot.getChildren()){
                     RequestFriend rf = e.getValue(RequestFriend.class);
                     listRequest.add(rf);
-                    Log.d("userFirebase",rf.toString());
                 }
             }
             @Override
