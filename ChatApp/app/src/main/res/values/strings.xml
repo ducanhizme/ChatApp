@@ -24,4 +24,9 @@
     <string name="cancel">cancel</string>
     <string name="add_friends_2">Add Friends</string>
     <string name="add">add</string>
+    <string name="acceptRequest">Accept</string>
+    <string name="pendingRequest">Pending</string>
+    <string name="send_message">Send message</string>
+    <string name="message">Message</string>
+    <string name="send">send</string>
 </resources>

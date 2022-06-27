@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.chatapp.R;
 import com.example.chatapp.adapter.RequestAdapter;
 import com.example.chatapp.databinding.FragmentRequestBinding;
+import com.example.chatapp.mInterface.IRecycleViewClick;
 import com.example.chatapp.model.RequestFriend;
 import com.example.chatapp.model.UserModel;
 import com.example.chatapp.service.Constant;
@@ -32,26 +33,24 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RequestFragment extends Fragment {
+public class RequestFragment extends Fragment implements IRecycleViewClick {
     private FragmentRequestBinding binding_;
-    private final ArrayList<RequestFriend> listRequest = new ArrayList<>();
+    private ArrayList<RequestFriend> listRequest = new ArrayList<>();
     RequestAdapter adapter;
 
     public RequestFragment() {}
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding_ = FragmentRequestBinding.inflate(inflater);
         initViews();
-        getUserFromFb();
+        getListRequest();
         return binding_.getRoot();
     }
 
-    private void getUserFromFb() {
+    private void getListRequest() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         if (user != null) {
             String uid = user.getUid();
             FirebaseDatabase fdb = FirebaseDatabase.getInstance();
@@ -62,10 +61,9 @@ public class RequestFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot e : snapshot.getChildren()) {
                         RequestFriend rf = e.getValue(RequestFriend.class);
-                         listRequest.add(rf);
-                         adapter.updateRequestList(listRequest);
-                       // adapter.notifyDataSetChanged();
+                        listRequest.add(rf);
                     }
+                    adapter.updateRequestList(listRequest);
                 }
 
                 @Override
@@ -77,14 +75,22 @@ public class RequestFragment extends Fragment {
     }
 
     private void initViews() {
-        listRequest.add(
-                new RequestFriend( "sdsdsds", new UserModel("1212","1212","1212","https://lh3.googleusercontent.com/a/AATXAJxQdj0ADSblju8tCAhrCrbTdHTdT02PIehbENPN=s96-c"))
-        );
         binding_.recyclerview.setLayoutManager( new LinearLayoutManager(getContext()));
-        adapter= new RequestAdapter(getContext()/*,listRequest*/);
+        adapter= new RequestAdapter(getContext(),this);
         binding_.recyclerview.setAdapter(adapter);
         binding_.recyclerview.setHasFixedSize(true);
-
     }
+
+    @Override
+    public void removeItem(RequestFriend rf) {
+        listRequest.remove(rf);
+        adapter.updateRequestList(listRequest);
+        Toast.makeText(getContext(),""+ listRequest.size(),Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void transIntent(UserModel user) {
+    }
+
 
 }

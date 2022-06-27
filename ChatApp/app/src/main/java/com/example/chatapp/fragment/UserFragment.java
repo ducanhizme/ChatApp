@@ -27,12 +27,15 @@ import com.example.chatapp.databinding.FragmentUserBinding;
 import com.example.chatapp.model.UserModel;
 import com.example.chatapp.service.Constant;
 import com.example.chatapp.service.FireBaseHelper;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +43,7 @@ public class UserFragment extends Fragment {
     private FragmentUserBinding binding_;
     private UserAdapter ua ;
     private ArrayList<UserModel> mlist=  new ArrayList<>();
+    private ArrayList<UserModel> listFriends = new ArrayList<>();
     private Dialog dialog;
 
     public UserFragment() {}
@@ -50,6 +54,7 @@ public class UserFragment extends Fragment {
         binding_ = FragmentUserBinding.inflate(inflater);
         initViews();
         getDataFromFb();
+        loadFriendsDB();
         return binding_.getRoot();
     }
 
@@ -60,12 +65,11 @@ public class UserFragment extends Fragment {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                mlist.clear();
                 for(DataSnapshot data : snapshot.getChildren()){
                     UserModel user = data.getValue(UserModel.class);
                     mlist.add(user);
-                    ua.notifyDataSetChanged();
                 }
+                ua.updateUserList(mlist);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -73,6 +77,11 @@ public class UserFragment extends Fragment {
 
             }
         });
+//        this.mlist = FireBaseHelper.getListUser();
+//        ArrayList<UserModel> list = new ArrayList<>();
+//        list.addAll(FireBaseHelper.getListUser());
+//        Toast.makeText(getContext(),"" + list.size(),Toast.LENGTH_SHORT).show();
+//        updateList(list);
     }
 
     private void initViews() {
@@ -97,23 +106,43 @@ public class UserFragment extends Fragment {
     }
 
     private void setUpRcv() {
-        ua = new UserAdapter(getContext(), mlist);
+        ua = new UserAdapter(getContext());
         binding_.recyclerview.setAdapter(ua);
         LinearLayoutManager ln = new LinearLayoutManager(getContext());
         binding_.recyclerview.setLayoutManager(ln);
         binding_.recyclerview.setHasFixedSize(true);
-
     }
 
 
     private void filter(String s) {
-        List<UserModel> userFilter = new ArrayList<>();
+        ArrayList<UserModel> userFilter = new ArrayList<>();
         for(UserModel user :mlist){
             if(user.getName().toLowerCase().contains(s.toLowerCase())){
                 userFilter.add(user);
             }
         }
-        ua.updateUserList(userFilter);
+        ua.updateFilterList(userFilter);
     }
 
+    public void loadFriendsDB(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        assert  user != null;
+        FirebaseDatabase fd = FirebaseDatabase.getInstance();
+        DatabaseReference dbr = fd.getReference(Constant.LIST_FRIEND).child(user.getUid());
+        dbr.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot e : snapshot.getChildren()){
+                    UserModel friend = e.getValue(UserModel.class);
+                    listFriends.add(friend);
+                    Log.d("check2",friend.toString());
+                }
+                ua.updateFriendsList(listFriends);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+    }
 }

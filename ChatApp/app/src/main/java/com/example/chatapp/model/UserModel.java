@@ -1,9 +1,13 @@
 package com.example.chatapp.model;
+import androidx.annotation.NonNull;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
-public class UserModel {
+public class UserModel implements Serializable {
     private String id;
     private String name;
     private String email;
@@ -67,14 +71,27 @@ public class UserModel {
         this.listFriends = listFriends;
     }*/
 
-   /* @Override
+    @NonNull
+    @Override
     public String toString() {
         return "UserModel{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", image='" + image + '\'' +
-                ", listFriends=" + listFriends +
                 '}';
-    }*/
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserModel userModel = (UserModel) o;
+        return Objects.equals(id, userModel.id) && Objects.equals(name, userModel.name) && Objects.equals(email, userModel.email) && Objects.equals(image, userModel.image);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email, image);
+    }
 }

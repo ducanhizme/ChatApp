@@ -7,10 +7,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.chatapp.model.ChatModel;
 import com.example.chatapp.model.RequestFriend;
 import com.example.chatapp.model.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -59,12 +62,19 @@ public class FireBaseHelper {
 
     public static void removeRequest(String id){
         FirebaseDatabase fdb = FirebaseDatabase.getInstance();
-        DatabaseReference dbr = fdb.getReference(Constant.REQUEST_REFERENCE).child(id).child("list").child(id);
+        DatabaseReference dbr = fdb.getReference(Constant.REQUEST_REFERENCE).child(id);
         dbr.removeValue();
     }
 
-    public static List<RequestFriend> getRequestFriends(String idUser){
-        List<RequestFriend> listRequest = new ArrayList<>();
+    public static void addFriend(UserModel user, String id, String idCurrent){
+        FirebaseDatabase fd = FirebaseDatabase.getInstance();
+        DatabaseReference dr = fd.getReference(Constant.LIST_FRIEND).child(idCurrent).child(id);
+        dr.setValue(user.toHashMap());
+
+    }
+
+    public static ArrayList<RequestFriend> getRequestFriends(String idUser){
+        ArrayList<RequestFriend> listRequest = new ArrayList<>();
         FirebaseDatabase fdb = FirebaseDatabase.getInstance();
         DatabaseReference dbr = fdb.getReference(Constant.REQUEST_REFERENCE).child(idUser);
         dbr.addValueEventListener(new ValueEventListener() {
@@ -81,4 +91,18 @@ public class FireBaseHelper {
         });
         return listRequest;
     }
+
+//    @NonNull
+//    public static ArrayList<UserModel> getListFriends(String idCurrentUser){
+//        ArrayList<UserModel> list = new ArrayList<>();
+//
+//        return list;
+//    }
+
+    public static void sendMessage(ChatModel chatM){
+        FirebaseDatabase fd = FirebaseDatabase.getInstance();
+        DatabaseReference dr = fd.getReference(Constant.CHAT_REFERENCE);
+        dr.push().setValue(chatM.toHashMap());
+    }
+
 }

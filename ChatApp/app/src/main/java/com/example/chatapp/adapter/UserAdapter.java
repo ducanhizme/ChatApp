@@ -8,9 +8,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
@@ -18,39 +18,54 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chatapp.R;
 import com.example.chatapp.databinding.ItemCardviewBinding;
-import com.example.chatapp.databinding.PopupDialogBinding;
 import com.example.chatapp.model.UserModel;
 import com.example.chatapp.service.Constant;
 import com.example.chatapp.service.FireBaseHelper;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserViewHolder>{
 
-    public ArrayList<UserModel> userList = new ArrayList<UserModel>();
+    public ArrayList<UserModel> userList = new ArrayList<>();
+    public ArrayList<UserModel> friends = new ArrayList<>();
     public Dialog dialog;
     public Context mContext;
 
 
-    public UserAdapter(Context mContext, ArrayList<UserModel> userList){
+    public UserAdapter(Context mContext){
         this.mContext = mContext;
-        this.userList = userList;
     }
 
-
     @SuppressLint("NotifyDataSetChanged")
-    public void updateUserList(List<UserModel> users){
+    public void updateUserList(ArrayList<UserModel> users){
         userList.clear();
         notifyDataSetChanged();
         userList.addAll(users);
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateFilterList(ArrayList<UserModel> users){
+        this.userList =  users;
+        notifyDataSetChanged();
+    }
+
+    public void updateFriendsList(ArrayList<UserModel> friends){
+        this.friends.clear();
+        this.friends.addAll(friends);
+    }
+
+
     @NonNull
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -66,12 +81,12 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserViewHolde
             return;
         }
         holder.bindViewHolder(user.getId(),user.getName(),user.getEmail(),user.getImage());
-        holder.binding_.userCard.setOnClickListener(view ->{
-            if(holder.isYou(user.getId())){
-                holder.addFriendDialog(userList,position);
-            }
-        });
-//        holder.setOnClickListener(this.listener);
+        holder.isFriend(userList.get(position));
+        holder.isYou(user.getId());
+        holder.canItemClick(position);
+
+
+
     }
 
     @Override
@@ -82,7 +97,6 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserViewHolde
     public class UserViewHolder extends RecyclerView.ViewHolder {
         ItemCardviewBinding binding_;
         String state = "nothing";
-
 
         public UserViewHolder(@NonNull ItemCardviewBinding binding_) {
             super(binding_.getRoot());
@@ -95,18 +109,34 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserViewHolde
             Picasso.get().load(Uri.parse(imageUri)).into(binding_.imageUser);
         }
 
-        private boolean isYou(String id) {
+        @SuppressLint("SetTextI18n")
+        private void isFriend(UserModel user){
+            for(UserModel e : friends){
+                if(e.getId().equalsIgnoreCase(user.getId())){
+                    binding_.friend.setText("Friend");
+                }
+            }
+        }
+
+        private void canItemClick(int position){
+             String str = (String) binding_.friend.getText();
+             if(str.equals("")){
+                 binding_.userCard.setOnClickListener(view ->{
+                     addFriendDialog(userList,position);
+                 });
+             }
+        }
+
+        @SuppressLint("SetTextI18n")
+        private void isYou(String id) {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
                 Log.d("id", user.getUid());
                 if (user.getUid().equalsIgnoreCase(id)) {
                     binding_.friend.setText("You");
-                    return false;
                 }
             }
-            return true;
         }
-
 
         private void addFriendDialog(List<UserModel> list, int position) {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -136,6 +166,7 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserViewHolde
                     FireBaseHelper.sendRequest(list.get(position).getId(), user.getUid(), Constant.SENDER, userCurrentModel);
                     state = "pending";
                     Log.e("state", state);
+                    addBtn.setEnabled(false);
                 });
             }
         }

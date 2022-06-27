@@ -1,5 +1,7 @@
 package com.example.chatapp.model;
 
+import androidx.annotation.NonNull;
+
 import java.util.HashMap;
 
 public class RequestFriend {
@@ -42,4 +44,12 @@ public class RequestFriend {
         return hm;
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return "RequestFriend{" +
+                "user=" + user +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

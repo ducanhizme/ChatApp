@@ -5,56 +5,54 @@
     android:id="@+id/user_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
     android:background="@drawable/custom_card"
-    android:padding="10dp">
+    android:layout_marginBottom="10dp">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_launcher"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/circle" />
+        app:shapeAppearanceOverlay="@style/circle"
+        android:layout_marginStart="10dp"/>
 
-    <TextView
-        android:id="@+id/username"
+    <LinearLayout
+        android:id="@+id/linearLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_toEndOf="@+id/imageUser"
-        android:fontFamily="@font/roboto_bold"
-        android:text="User name"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/emailUser"
-        app:layout_constraintStart_toEndOf="@+id/imageUser" />
+        android:layout_marginStart="5dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageUser"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/emailUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/username"
-        android:layout_marginEnd="32dp"
-        android:layout_toEndOf="@+id/imageUser"
-        android:fontFamily="@font/roboto_medium"
-        android:text="Emailuser"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageUser"
-        app:layout_constraintEnd_toEndOf="@+id/username" />
+        <TextView
+            android:id="@+id/userNameRequest"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            tools:ignore="SmallSp"/>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="176dp"
-        android:layout_height="36dp"
+        android:layout_height="22dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="5dp">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/accept"
@@ -66,8 +64,8 @@
             android:textColor="@color/white" />
 
         <com.google.android.material.divider.MaterialDivider
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_width="2dp"
+            android:layout_height="2dp"
             app:dividerColor="@color/white" />
 
         <androidx.appcompat.widget.AppCompatButton
