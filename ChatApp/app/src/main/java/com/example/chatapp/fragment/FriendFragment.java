@@ -61,8 +61,9 @@ public class FriendFragment extends Fragment implements IRecycleViewClick {
                 for(DataSnapshot e : snapshot.getChildren()){
                     UserModel user = e.getValue(UserModel.class);
                     listFriends.add(user);
+                    adapter.updateFriendsList(listFriends);
                 }
-                adapter.updateFriendsList(listFriends);
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -82,7 +83,8 @@ public class FriendFragment extends Fragment implements IRecycleViewClick {
     private String getIdCurrentUser() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String id ="";
-        if(user != null) id = user.getUid();
+        if(user != null)
+            id = user.getUid();
         else return "" ;
         return id;
     }
@@ -93,11 +95,9 @@ public class FriendFragment extends Fragment implements IRecycleViewClick {
 
     @Override
     public void transIntent(UserModel user) {
-        Toast.makeText(getContext(), user.toString(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getContext(), ChatActivity.class);
         intent.putExtra(Constant.KEY_USER,user);
         startActivity(intent);
     }
-
 
 }

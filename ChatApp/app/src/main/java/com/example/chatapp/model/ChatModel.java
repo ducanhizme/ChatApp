@@ -3,19 +3,19 @@ package com.example.chatapp.model;
 import androidx.annotation.NonNull;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class ChatModel {
+    private String msg;
     private String sender;
     private String receiver;
-    private String message;
-
     public ChatModel() {
     }
 
-    public ChatModel(String sender, String receiver, String message) {
+    public ChatModel(String sender, String receiver, String msg) {
         this.sender = sender;
         this.receiver = receiver;
-        this.message = message;
+        this.msg = msg;
     }
 
     public String getSender() {
@@ -35,11 +35,11 @@ public class ChatModel {
     }
 
     public String getMessage() {
-        return message;
+        return msg;
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        this.msg = message;
     }
 
     @NonNull
@@ -48,15 +48,15 @@ public class ChatModel {
         return "ChatModel{" +
                 "sender='" + sender + '\'' +
                 ", receiver='" + receiver + '\'' +
-                ", message='" + message + '\'' +
+                ", message='" + msg + '\'' +
                 '}';
     }
 
-    public HashMap<String,String> toHashMap(){
+    public Map<String, String> toHashMap(){
         HashMap<String,String> hm = new HashMap<>();
         hm.put("sender",sender);
         hm.put("receiver",receiver);
-        hm.put("msg",message);
+        hm.put("msg",msg);
         return hm;
     }
 }

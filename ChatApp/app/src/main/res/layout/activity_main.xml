@@ -64,17 +64,18 @@
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <ImageButton
         android:id="@+id/logout_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:background="@null"
-        android:drawableEnd="@drawable/sign_out_alt"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/baseline_logout_white_36dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.015" />
+        app:layout_constraintVertical_bias="0.023"
+        tools:ignore="ContentDescription" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"

@@ -59,13 +59,14 @@ public class RequestFragment extends Fragment implements IRecycleViewClick {
                 @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    adapter.getListRequest().clear();
+                    listRequest.clear();
                     for (DataSnapshot e : snapshot.getChildren()) {
                         RequestFriend rf = e.getValue(RequestFriend.class);
                         listRequest.add(rf);
+                        adapter.updateRequestList(listRequest);
                     }
-                    adapter.updateRequestList(listRequest);
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
@@ -84,13 +85,11 @@ public class RequestFragment extends Fragment implements IRecycleViewClick {
     @Override
     public void removeItem(RequestFriend rf) {
         listRequest.remove(rf);
+//        adapter.getListRequest().remove(rf);
         adapter.updateRequestList(listRequest);
-        Toast.makeText(getContext(),""+ listRequest.size(),Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void transIntent(UserModel user) {
     }
-
-
 }

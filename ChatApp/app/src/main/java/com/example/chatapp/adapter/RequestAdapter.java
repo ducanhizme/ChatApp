@@ -30,6 +30,16 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
         this.iRecycleViewClick = iRecycleViewClick;
     }
 
+    public RequestAdapter(Context mContext,IRecycleViewClick iRecycleViewClick,ArrayList<RequestFriend> data){
+        this.mContext = mContext;
+        this.iRecycleViewClick = iRecycleViewClick;
+        this.listRequest = data;
+    }
+
+    public ArrayList<RequestFriend> getListRequest() {
+        return listRequest;
+    }
+
     @NonNull
     @Override
     public RequestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,7 +60,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
 
     @SuppressLint("NotifyDataSetChanged")
     public void updateRequestList(ArrayList<RequestFriend> mListRequest){
-        listRequest.clear();
+        this.listRequest.clear();
         notifyDataSetChanged();
         this.listRequest.addAll(mListRequest);
     }
@@ -75,7 +85,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
         if(holder.binding_.accept.getText().equals(mContext.getString(R.string.acceptRequest))){
             holder.binding_.accept.setOnClickListener(v->{
                 handleAddFriends(rf);
-//                handleRemoveRequest(rf);
+                handleRemoveRequest(rf);
                 iRecycleViewClick.removeItem(rf);
             });
         }

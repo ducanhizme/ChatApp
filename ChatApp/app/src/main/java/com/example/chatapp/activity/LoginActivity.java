@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.background));
         setContentView(binding.getRoot());
         fba = FirebaseAuth.getInstance();
         requestData();

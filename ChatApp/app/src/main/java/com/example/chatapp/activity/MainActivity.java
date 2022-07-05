@@ -2,6 +2,7 @@ package com.example.chatapp.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.background));
         setContentView(binding.getRoot());
 //        getSupportFragmentManager().beginTransaction().add(R.id.rc_layout,new FriendsFragment()).commit();
         loadFragmemtToTabLayout();
@@ -49,12 +51,9 @@ public class MainActivity extends AppCompatActivity {
                         tab.setText("Users");
                         break;
                     case 1:
-                        tab.setText("Chat");
-                        break;
-                    case 2:
                         tab.setText("Friends");
                         break;
-                    case 3:
+                    case 2:
                         tab.setText("Request");
                         break;
                 }

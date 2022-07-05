@@ -23,7 +23,11 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private String senderId;
 
 
-    public ChatAdapter(Context mContext,String senderId){
+    public ArrayList<ChatModel> getChatList() {
+        return chatList;
+    }
+
+    public ChatAdapter(Context mContext, String senderId){
         this.context = mContext;
         this.senderId = senderId;
     }
@@ -31,8 +35,8 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @SuppressLint("NotifyDataSetChanged")
     public void updateChatList(ArrayList<ChatModel> list){
         this.chatList.clear();
-        notifyDataSetChanged();
         this.chatList.addAll(list);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -47,9 +51,11 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if(getItemViewType(position)== MSG_RIGHT){
+
+        if(holder instanceof MsgRight){
             ((MsgRight)holder).showMsgRight(chatList.get(position));
-        }else{
+        }
+        if(holder instanceof MsgLeft){
             ((MsgLeft)holder).showMsgLeft(chatList.get(position));
         }
     }
@@ -62,9 +68,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public int getItemViewType(int position) {
         if (chatList.get(position).getSender().equals(senderId))
-            return MSG_RIGHT;
-        else
             return MSG_LEFT;
+        else
+            return MSG_RIGHT;
     }
 
     public class MsgRight extends RecyclerView.ViewHolder{

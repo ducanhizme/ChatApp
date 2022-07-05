@@ -41,8 +41,7 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserViewHolde
     public ArrayList<UserModel> friends = new ArrayList<>();
     public Dialog dialog;
     public Context mContext;
-
-
+    
     public UserAdapter(Context mContext){
         this.mContext = mContext;
     }
@@ -60,8 +59,10 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserViewHolde
         notifyDataSetChanged();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void updateFriendsList(ArrayList<UserModel> friends){
         this.friends.clear();
+        notifyDataSetChanged();
         this.friends.addAll(friends);
     }
 
@@ -84,9 +85,6 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserViewHolde
         holder.isFriend(userList.get(position));
         holder.isYou(user.getId());
         holder.canItemClick(position);
-
-
-
     }
 
     @Override

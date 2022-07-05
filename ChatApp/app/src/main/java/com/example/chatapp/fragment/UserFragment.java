@@ -61,6 +61,7 @@ public class UserFragment extends Fragment {
     private void getDataFromFb() {
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference ref = db.getReference(Constant.USER_REFERENCE);
+        this.mlist.clear();
         ref.addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override

@@ -5,6 +5,8 @@
       <map>
         <entry key="..\:/ChatApp/ChatApp/app/src/main/res/drawable/baseline_doorbell_black_24dp.xml" value="0.1545" />
         <entry key="..\:/ChatApp/ChatApp/app/src/main/res/drawable/baseline_doorbell_black_36dp.xml" value="0.1545" />
+        <entry key="..\:/ChatApp/ChatApp/app/src/main/res/drawable/baseline_logout_black_36dp.xml" value="0.154" />
+        <entry key="..\:/ChatApp/ChatApp/app/src/main/res/drawable/baseline_logout_white_36dp.xml" value="0.154" />
         <entry key="..\:/ChatApp/ChatApp/app/src/main/res/drawable/custom_button.xml" value="0.1545" />
         <entry key="..\:/ChatApp/ChatApp/app/src/main/res/drawable/custom_button_add.xml" value="0.1545" />
         <entry key="..\:/ChatApp/ChatApp/app/src/main/res/drawable/custom_button_cancel.xml" value="0.1545" />

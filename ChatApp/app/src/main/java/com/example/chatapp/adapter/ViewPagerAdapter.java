@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.chatapp.fragment.ChatFragment;
 import com.example.chatapp.fragment.FriendFragment;
 import com.example.chatapp.fragment.RequestFragment;
 import com.example.chatapp.fragment.UserFragment;
@@ -22,10 +21,8 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
             case 0:
                 return new UserFragment();
             case 1:
-                return new ChatFragment();
-            case 2:
                 return new FriendFragment();
-            case 3:
+            case 2:
                 return new RequestFragment();
         }
         return new UserFragment();
@@ -33,7 +30,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 4;
+        return 3;
     }
 
 
